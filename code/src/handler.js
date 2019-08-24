@@ -49,11 +49,13 @@ const put = async event => {
         })
     }
 
+    // TODO:
+    // figure out api for defining PK and SK in component inputs
     const params = {
         TableName: TABLE,
         Item: {
-            PK: 'data',
-            SK: 'date' + Date.now().toString(),
+            PK: 'item',
+            SK: 'item' + Date.now().toString(),
             name: data.name,
             age: data.age
         }

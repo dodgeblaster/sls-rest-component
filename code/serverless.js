@@ -35,7 +35,7 @@ const makeDynamoTable = async component => {
 const makeRole = async component => {
     const role = await component.load('@serverless/aws-iam-role')
     const roleInputs = {
-        name: 'function-1-' + component.context.resourceId(),
+        name: component.context.resourceId(),
         region: 'us-east-1',
         service: 'lambda.amazonaws.com',
         policy: makePolicy()
@@ -47,7 +47,7 @@ const makeRole = async component => {
 const makeLambda = async (component, dynamo, role, schema) => {
     const lambda = await component.load('@serverless/aws-lambda')
     const lambdaConfig = {
-        name: 'f1-' + component.context.resourceId(),
+        name: component.context.resourceId(),
         code: './code/src',
         handler: 'handler.hello',
         role: role,
@@ -64,7 +64,7 @@ const makeLambda = async (component, dynamo, role, schema) => {
 const makeApi = async (component, lambda) => {
     const apig = await component.load('@serverless/aws-api-gateway')
     const apigInputs = {
-        name: 'backend-' + component.context.resourceId(),
+        name: component.context.resourceId(),
         description: 'An API for a Backend component',
         endpoints: [
             {

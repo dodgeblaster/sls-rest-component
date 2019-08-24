@@ -1,0 +1,13 @@
+{
+  "name": "customcomponent",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@serverless/aws-api-gateway": "^1.0.1",
+    "@serverless/aws-dynamodb": "^2.0.0",
+    "@serverless/aws-iam-role": "^1.0.0",
+    "@serverless/aws-lambda": "^1.2.0",
+    "@serverless/core": "^1.0.0"
+  }
+}

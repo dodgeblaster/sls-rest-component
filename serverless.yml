@@ -1,0 +1,8 @@
+name: my-custom-component
+
+myComponent:
+    component: ./code
+    inputs:
+        schema:
+            name: 'string'
+            age: 'string'

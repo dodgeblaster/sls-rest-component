@@ -4,5 +4,7 @@ myComponent:
     component: ./code
     inputs:
         schema:
-            name: 'string'
+            id: '@primary string'
+            name: '@sort string'
+            job: 'string'
             age: 'string'

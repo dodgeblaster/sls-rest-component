@@ -1,6 +1,8 @@
 const aws = require('aws-sdk')
 const validate = require('./validator')
-const http = require('http')
+const http = require('./http')
+const format = require('./format')
+const getSchema = require('./schema')
 
 const dynamo = new aws.DynamoDB.DocumentClient()
 const TABLE = process.env.TABLE
@@ -17,11 +19,12 @@ const getAll = async () => {
         TableName: TABLE
     }
 
+    const { PK, SK, schema } = getSchema()
+
     const results = await dynamo.scan(params).promise()
-    const formatted = results.Items.map(x => ({
-        name: x.name,
-        age: x.age
-    }))
+    const formatted = results.Items.map(x => {
+        return format.out(schema, PK, SK, x)
+    })
 
     return http.out({
         data: formatted
@@ -35,7 +38,8 @@ const getAll = async () => {
  */
 const put = async event => {
     const data = JSON.parse(event.body)
-    const schema = JSON.parse(process.env.SCHEMA)
+
+    const { PK, SK, schema } = getSchema()
 
     try {
         validate({
@@ -49,24 +53,13 @@ const put = async event => {
         })
     }
 
-    // TODO:
-    // figure out api for defining PK and SK in component inputs
     const params = {
         TableName: TABLE,
-        Item: {
-            PK: 'item',
-            SK: 'item' + Date.now().toString(),
-            name: data.name,
-            age: data.age
-        }
+        Item: format.in(schema, PK, SK, data)
     }
 
     await dynamo.put(params).promise()
-
-    return http.out({
-        name: data.name,
-        age: data.age
-    })
+    return http.out(data)
 }
 
 module.exports.hello = async (event, context, cb) => {
